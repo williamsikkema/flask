@@ -61,16 +61,17 @@ def send_webhook():
 @app.route('/webhook', methods=['POST'])
 def handle_webhook():
     try:
+        start_timer()
         # Attempt to get JSON data, but don't raise an error if it's not present
-        data = request.get_json(silent=True)
+        #data = request.get_json(silent=True)
         
-        if data is None:
-            print("No JSON data received")
-        else:
-            print(f"Received webhook with data: {data}")
+        #if data is None:
+        #    print("No JSON data received")
+        #else:
+        #    print(f"Received webhook with data: {data}")
         
         # Start the timer regardless of whether JSON data was received
-        start_timer()
+        
         
         return "Webhook received and timer started/restarted", 200
     
