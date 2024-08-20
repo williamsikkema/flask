@@ -36,10 +36,24 @@ def send_webhook():
 
 @app.route('/webhook', methods=['POST'])
 def handle_webhook():
-    data = request.get_json()  # You can also handle specific data if needed
-    print(f"Received webhook with data: {data}")
-    start_timer()
-    return "Webhook received and timer started/restarted", 200
+    try:
+        # Attempt to get JSON data, but don't raise an error if it's not present
+        data = request.get_json(silent=True)
+        
+        if data is None:
+            print("No JSON data received")
+        else:
+            print(f"Received webhook with data: {data}")
+        
+        # Start the timer regardless of whether JSON data was received
+        start_timer()
+        
+        return "Webhook received and timer started/restarted", 200
+    
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return jsonify({"status": "error", "message": str(e)}), 500
+
 
 @app.route('/time_remaining', methods=['GET'])
 def get_time_remaining():
